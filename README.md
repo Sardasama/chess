@@ -1,4 +1,4 @@
-*Game working as intended for now*
+*WORK STILL IN PROGRESS : Game working as intended for now*
 
 **Working features :**
 - board display
