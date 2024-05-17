@@ -11,8 +11,8 @@
 
 **Still missing :**
 - winning conditions : verify for check and checkmate
-- refining of pawns movements : can move 2 squares on first move, can only eat on a diagonal move
-- castling mve
+- refining of pawns movements : can move 2 squares on first move, can only take on a diagonal move
+- castling move
 - promotion of a pawn
 - save/load feature
 - game menu (start, load)
