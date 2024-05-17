@@ -19,7 +19,7 @@
 - basic AI
 
 **Could/should be improved :**
-- improve code by replacing loops and limiting the use of arrays
+- clean and improve code by replacing loops and limiting the use of arrays
 - let players enter their names and choose their color
 - manage stalemate and rules about repetition
 - scoreboard
