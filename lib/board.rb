@@ -69,35 +69,58 @@ class Board
     end
   end
 
-  def move_piece(from, to)
+  def move_piece(from, to, update)
     #if destination is empty
     if get_chesspiece(to).nil? || get_chesspiece(from).color != get_chesspiece(to).color 
       if get_chesspiece(from).is_move_valid?(to)
-        if collision?(from, to)
-          if !get_chesspiece(to).nil? && get_chesspiece(from).color != get_chesspiece(to).color 
-            puts "The #{get_chesspiece(to).color} #{get_chesspiece(to).name} has been eaten!"
+        if !check_pawn_move(from, to)
+          puts "Invalid move, your chesspiece cannot perform that move."
+          return false
+        end
+        if no_collision?(from, to)
+          if update
+            if !get_chesspiece(to).nil? && get_chesspiece(from).color != get_chesspiece(to).color 
+              puts "The #{get_chesspiece(to).color} #{get_chesspiece(to).name} has been taken!"
+            end
+            get_chesspiece(from).move_to(to)
+            @grid[to[0]][to[1]].piece = get_chesspiece(from)
+            @grid[from[0]][from[1]].piece = nil
+            if get_chesspiece(to).is_a?(Pawn) && (to[0] == 0 || to[0] == 7)
+              promote_pawn(get_chesspiece(to))
+            end
           end
-          get_chesspiece(from).move_to(to)
-          @grid[to[0]][to[1]].piece = get_chesspiece(from)
-          @grid[from[0]][from[1]].piece = nil
+          return true
         else
-           puts "Invalid move : a pawn is in the way."
+          puts "Invalid move : a pawn is in the way."
+          return false
         end
       end
     # else this means get_chesspiece(from).color == get_chesspiece(to).color
     else 
       puts "Invalid move : the destination already contains one of your pawns." 
+      return false
     end
   end
 
   def get_chesspiece(pos)
     @grid[pos[0]][pos[1]].piece
   end
+
+  def check_pawn_move(from, to)
+    if get_chesspiece(from).is_a?(Pawn) && diagonal_move?(from, to)
+      if get_chesspiece(to).nil?
+        return false
+      end
+      true
+    else
+      return true
+    end
+  end
   
-  def collision?(from, to)
+  def no_collision?(from, to)
     if horizontal_move?(from, to)
       for i in (from[1]..to[1])
-        if !@grid[from[0]][i].piece.nil? && [from[0], i] != from
+        if !@grid[from[0]][i].piece.nil? && [from[0], i] != from && [from[0], i] != to
            puts "#{get_chesspiece([from[0], i])} is in the way"
            return false
         end
@@ -105,7 +128,7 @@ class Board
     end
     if vertical_move?(from, to)
       for i in (from[0]..to[0])
-        if !@grid[i][from[1]].piece.nil? && [i, from[1]] != from
+        if !@grid[i][from[1]].piece.nil? && [i, from[1]] != from && [i, from[1]] != to
           puts "#{get_chesspiece([i, from[1]])} is in the way"
           return false 
         end
@@ -141,6 +164,29 @@ class Board
       end
     end
     true
+  end
+
+  def promote_pawn(pawn)
+    puts "Your pawn can be promoted !"
+    input = "";
+    until ["T", "K", "B", "Q"].include?(input)
+      puts "Please select a promotion : (T)ower, (K)night, (B)ishop or (Q)ueen."
+      input = gets.chomp 
+    end
+    r = pawn.position[0]
+    c = pawn.position[1]
+
+    case input
+      when "T"
+        new_piece = Tower.new(pawn.color, pawn.position)
+      when "K"
+        new_piece = Knight.new(pawn.color, pawn.position)
+      when "B"
+        new_piece = Bishop.new(pawn.color, pawn.position)
+      when "Q"
+        new_piece = Queen.new(pawn.color, pawn.position)
+    end
+    @grid[r][c] = Square.new(r, c, new_piece)
   end
 
   def horizontal_move?(from, to)
