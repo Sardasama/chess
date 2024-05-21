@@ -46,12 +46,15 @@ class Game
             puts "No chesspiece here. Please select another." 
             is_move_ok = false
           end
-          if @myboard.get_chesspiece(from).color != p.color
+          if is_move_ok && @myboard.get_chesspiece(from).color != p.color
             puts "Not yours ! Please select another."
             is_move_ok = false
           end
+          if is_move_ok && !@myboard.move_piece(from, to, false)
+            is_move_ok = false
+          end
         end
-        @myboard.move_piece(from, to)
+        @myboard.move_piece(from, to, true)
         @myboard.show
       end
     end
