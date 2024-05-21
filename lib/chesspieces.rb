@@ -151,6 +151,7 @@ class Pawn < ChessPiece
     @image = color == "white" ? "\u2659" : "\u265F"
     super(color, position)
     build_move_map
+    @color == "black" ? @move_map << [3, position[1]] :  @move_map << [4, position[1]]
   end
 
   def build_move_map
