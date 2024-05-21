@@ -2,16 +2,18 @@
 
 **Working features :**
 - board display
-- all chesspieces movements, except castling move (switching tower and king) and refining of pawns
+- all chesspieces movements, except castling move (switching tower and king)
 - collision check
 - players take turn
 
 **Fix needed**
+
+**FIXED**
 - if error is raised during the move_to function, the next turn shouldn't start 
+- refining of pawns movements : can move 2 squares on first move, can only take on a diagonal move
 
 **Still missing :**
 - winning conditions : verify for check and checkmate
-- refining of pawns movements : can move 2 squares on first move, can only take on a diagonal move
 - castling move
 - promotion of a pawn
 - save/load feature
